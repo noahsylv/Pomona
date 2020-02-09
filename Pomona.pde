@@ -4,36 +4,34 @@ ArrayList<SoundFile> soundFiles;
 int w = 100;
 int h = 100;
 
+int LIMIT = 300;
+
 void setup() {
   size(1200, 800);
   strokeWeight(2);
   buttons = new ArrayList<Button>();
   soundFiles = new ArrayList<SoundFile>();
 
-  createButton(100, 100, "Scene 2", "02.mp3");
-  createButton(300, 100, "Scene 4", "04.mp3");
-  createButton(500, 100, "Scene 14", "14.mp3");
-  createButton(100, 400, "Scene 16", "16.mp3");
-  
 
-  //createButton(100, 100, "Scene 1", "rain.mp3");
-  //createButton(600, 700, "cars", "cars.mp3");
-  //createButton(600, 400, "heavy rain", "heavyRain.mp3", (int) (1.2 * w), h);
-  //createButton(400, 50, "tunnel", "tunnelOrig.mp3");
-  //createButton(225, 225, "furnace", "furnace.mp3");
-  //createButton(700, 600, "crowd", "crowd.mp3");
-  //createButton(200, 50, "tunnel", "tunnel.mp3");
-  //createButton(100, 300, "wind", "wind1.mp3");
-  //createButton(200, 500, "wind", "wind1.mp3");
+  String[] sounds = loadStrings("sounds.txt");
+  String[] positions = loadStrings("positions.txt");
+
+  for (int i = 0; i < sounds.length && i < LIMIT; i++) {
+    String[] pos = positions[i].split(",");
+    String[] sound = sounds[i].split(",");
+
+    createButton(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]), 
+      sound[0], sound[1], sound[2]);
+  }
 }
 
-void createButton(int px, int py, String name, String file, int unitX, int unitY){
-  buttons.add(new Button(px, py, unitX, unitY, name, file));
+void createButton(int px, int py, String name, String file, int unitX, int unitY, String type) {
+  buttons.add(new Button(px, py, unitX, unitY, name, file, type.equals("0")));
   soundFiles.add(new SoundFile(this, file));
 }
 
-void createButton(int px, int py, String name, String file) {
-  createButton(px, py, name, file, w, h);
+void createButton(int px, int py, String name, String file, String type) {
+  createButton(px, py, name, file, w, h, type);
 }
 
 void mousePressed() {
@@ -50,18 +48,39 @@ void mouseDragged() {
 
 void draw() {
   background(0);
+  String playing = "";
   for (int i = 0; i < buttons.size(); i++) {
     Button b = buttons.get(i);
     SoundFile sound = soundFiles.get(i);
     b.show();
+
     if (b.isOn && !sound.isPlaying()) {
-      sound.loop();
+      if (b.loop) {
+        sound.loop();
+      } else {
+        sound.play();
+        b.isOn = false;
+      }
     }
-    if (!b.isOn && sound.isPlaying()) {
-      sound.pause();
+
+    if (b.stop && sound.isPlaying()) {
+      sound.stop();
+      b.stop = false;
+      b.isOn = false;
     }
+
     if (sound.isPlaying()) {
+      String status = (b.loop) ? " (Looping)" : (b.isOn ? " (x2)" : " (1x)");
+      playing += b.name + status +"\n";
       sound.amp(b.amp);
     }
   }
+
+  
+  fill(255);
+  text("Sounds playing\n" +playing, 500, 500);
+  
+  
+  
+  
 }
