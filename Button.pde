@@ -11,10 +11,11 @@ class Button {
   int py;
   int w;
   int h;
+  int offset = 10;
 
-  int barX = 10;
+  int barX = 3;
   int barY = 1;
-  int gap = 5;
+  int gap = 15;
 
   float amp = 0.5;
 
@@ -30,18 +31,34 @@ class Button {
   }
 
   void show() {
+    fill(97, 27, 1);
+    rect(px - offset/2, py - offset/2, w + offset, h + offset);
+
+
+    onColor();
+    rect(px, py, w, h);
+
+
+
+    textAlign(CENTER);
+    fill(100);
+    rect(px + w + gap, py, w / barX, h / barY);
+
+    onColor();
+
+    int barHeight = (int) map(amp, 0, 1, 0, h / barY);
+    rect(px + w + gap, py + h / barY - barHeight, w / barX, barHeight);
+    textSize(20);
+    fill(97, 27, 1);
+    text(name, px + w/2, py + h/2);
+  }
+
+  void onColor() {
     if (!isOn) {
       fill(100);
     } else {
-      fill(255);
+      fill(100, 100, 150);
     }
-    rect(px, py, w, h);
-    text(name, px, py);
-    //fill(255);
-    rect(px + w + gap, py, w / barX, h / barY);
-    fill(100, 100, 150);
-    int barHeight = (int) map(amp, 0, 1, 0, h / barY);
-    rect(px + w + gap, py + h / barY - barHeight, w / barX, barHeight);
   }
 
   void click(int x, int y) {
