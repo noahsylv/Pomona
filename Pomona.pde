@@ -17,7 +17,7 @@ void setup() {
   createButton(700, 600, "crowd", "crowd.mp3");
   //createButton(200, 50, "tunnel", "tunnel.mp3");
   createButton(100, 300, "wind", "wind1.mp3");
-    createButton(200, 300, "wind", "wind1.mp3");
+    createButton(200, 500, "wind", "wind1.mp3");
 
 }
 
