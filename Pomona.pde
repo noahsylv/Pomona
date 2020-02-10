@@ -1,17 +1,28 @@
 
 ArrayList<Button> buttons;
 ArrayList<SoundFile> soundFiles;
-int w = 100;
-int h = 100;
+int w;
+int h;
+int rows = 3;
+int cols = 5;
 
-int LIMIT = 300;
+
+
+int LIMIT = 100;
+
+PVector getPos(int i) {
+  int x = w*(i % cols);
+  int y = h*(i / cols);
+  return new PVector(x, y);
+}
 
 void setup() {
   size(1200, 800);
   strokeWeight(2);
   buttons = new ArrayList<Button>();
   soundFiles = new ArrayList<SoundFile>();
-
+  w = 100;
+  h = 100;
 
   String[] sounds = loadStrings("sounds.txt");
   String[] positions = loadStrings("positions.txt");
@@ -19,6 +30,12 @@ void setup() {
   for (int i = 0; i < sounds.length && i < LIMIT; i++) {
     String[] pos = positions[i].split(",");
     String[] sound = sounds[i].split(",");
+
+    //PVector coord = getPos(i);
+    //    createButton((int) coord.x, (int) coord.y, 
+    //      sound[0], sound[1], sound[2]);
+
+    println(sound[0]);
 
     createButton(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]), 
       sound[0], sound[1], sound[2]);
@@ -76,11 +93,7 @@ void draw() {
     }
   }
 
-  
+
   fill(255);
   text("Sounds playing\n" +playing, 500, 500);
-  
-  
-  
-  
 }
