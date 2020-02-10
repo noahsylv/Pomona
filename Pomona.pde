@@ -39,6 +39,8 @@ void setup() {
 
     createButton(Integer.parseInt(pos[0]), Integer.parseInt(pos[1]), 
       sound[0], sound[1], sound[2]);
+    buttons.get(i).amp = (sound.length > 3) ? 
+      (float) Double.parseDouble(sound[3]) : 0.5;
   }
 }
 
