@@ -5,7 +5,7 @@ int w;
 int h;
 int rows = 3;
 int cols = 5;
-
+boolean missingSound = false;
 
 // this is a test
 int LIMIT = 100;
@@ -41,6 +41,20 @@ void setup() {
       sound[0], sound[1], sound[2]);
     buttons.get(i).amp = (sound.length > 3) ? 
       (float) Double.parseDouble(sound[3]) : 0.5;
+  }
+
+  checkAllSounds();
+}
+
+void checkAllSounds() {
+  try {
+    for (SoundFile s : soundFiles) {
+      s.play();
+      s.stop();
+    }
+  } 
+  catch (NullPointerException e) {
+    missingSound = true;
   }
 }
 
@@ -97,5 +111,6 @@ void draw() {
 
 
   fill(255);
-  text("Sounds playing\n" +playing, 800, 500);
+  String prefix = missingSound ? "Note: sounds missing!\n" : "";
+  text(prefix + "Sounds playing\n" +playing, 800, 500);
 }
