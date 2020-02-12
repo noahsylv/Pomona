@@ -97,5 +97,5 @@ void draw() {
 
 
   fill(255);
-  text("Sounds playing\n" +playing, 500, 500);
+  text("Sounds playing\n" +playing, 800, 500);
 }
